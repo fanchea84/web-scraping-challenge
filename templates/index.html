@@ -5,19 +5,30 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Costa Rica Weather</title>
+  <title>Mission To Mars</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
 
 <body>
   <div class="container-fluid">
     <div class="jumbotron text-center">
-      <h1>Visit the...</h1>
-      <p>Beach. Rainforest. Volcano. Tree House. Sloths.</p>
-      <p><a class="btn btn-primary btn-lg" href="/scrape" role="button">Get Data!</a></p>
+      <h1>Mission to Mars</h1>
+      <p><a class="btn btn-primary btn-lg" href="/scrape" role="button">Scrape New Data</a></p>
     </div>
-    <h3>data: {{ data }}</h3>
-  </div>
+    <hr>
+    <h2>Latest Mars News</h2>
+    <h3>data: {{ data.mars_hemisphere_images }}</h3>
+    <hr>
+    <h2>Featured Mars Image</h2>
+      <!-- Hemispheres -->
+      <!-- https://flask.palletsprojects.com/en/1.1.x/tutorial/templates/#the-base-layout -->
+      <!--Notes about FOR loop toward the middle of the page -->
+      <!-- JSON need to be clear about when dealing with K-V pairs vs. when dealing with _____ -->
+    <hr>
+    <h2>Mars Facts</h2>
+      <!-- Mars Facts -->
+      <!-- https://flask.palletsprojects.com/en/1.1.x/templating/#standard-filters -->
+      <!-- Notes about SAFE HTML near middle of page -->
   </div>
 </body>
 

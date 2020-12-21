@@ -1,7 +1,9 @@
-#!/usr/bin/env python
-# coding: utf-8
+########################################################################################################################################
+# Purpose of SCRAPE_MARS.PY is to scrape 3 websites for information related to planet Mars
+# How: leverage MongoDB with Flask templating 
+########################################################################################################################################
 
-# Dependencies
+# Import Dependencies
 from splinter import Browser
 from splinter.exceptions import ElementDoesNotExist
 from bs4 import BeautifulSoup
@@ -10,16 +12,31 @@ import pandas as pd
 import requests
 import pprint
 
-# This step opens a new chrome window that will be driven by code in the next few cells
-# It also adds another Chrome icon on the taskbar because it's using chromedriver instead of chrome
-executable_path = {'executable_path': 'chromedriver.exe'}
-browser = Browser('chrome', **executable_path, headless=False)
+
+# Scrape function to return Python dictionary
+def scrape():
+    # This step opens a new chrome window that will be driven by code in the next few cells
+    # It also adds another Chrome icon on the taskbar because it's using chromedriver instead of chrome
+    executable_path = {'executable_path': 'chromedriver.exe'}
+    browser = Browser('chrome', **executable_path, headless=False)
+    # define blank mars dictionary
+    mars_dict = {}
+    # call each "sub" function
+    mars_dict["mars_headline"] = mars_news_function(browser)
+    mars_dict["jpl_mars_image"] = jpl_image_function(browser)
+    mars_dict["mars_facts_table"] = mars_facts_function(browser)
+    mars_dict["mars_hemisphere_images"] = mars_hemisphere_function(browser)
+    print(mars_dict)
+    # Close the chromebrowser window
+    browser.quit()
+    return mars_dict
+
 
 ############################################################################################################################
 # NASA Mars News: Scrape the NASA Mars News Site and collect the latest News Title and Paragraph Text.
 ############################################################################################################################
 # This step creates a function MARS_NEWS_FUNCTION that navigates the chromebrowser window to NASA News site & runs BeautifulSoup to parse the site's HTML
-def mars_news_function():
+def mars_news_function(browser):
     nasa_url = "https://mars.nasa.gov/news/"
     browser.visit(nasa_url)
     sleep(3)  # This is a manual delay that prevents a "Race Condition" with JavaScript and this script competing for resources
@@ -29,15 +46,12 @@ def mars_news_function():
     nasa_headline = soup.find_all("div", class_="content_title")[0].get_text()
     return nasa_headline
 
-mars_headline = mars_news_function()
-print(mars_headline)
-
 
 ############################################################################################################################
 # JPL Mars Space Images: Use splinter to find the current Featured Mars Image
 ############################################################################################################################
 # This step creates a function JPL_IMAGE_FUNCTION that navigates the chromebrowser window to JPL images site & runs BeautifulSoup to parse the site's HTML
-def jpl_image_function():
+def jpl_image_function(browser):
     jpl_url = "https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars"
     browser.visit(jpl_url)
     sleep(3)  # This is a manual delay that prevents a "Race Condition" with JavaScript and this script competing for resources
@@ -56,14 +70,11 @@ def jpl_image_function():
     featured_image_url = browser.url
     return featured_image_url
 
-jpl_mars_image = jpl_image_function()
-print(jpl_mars_image)    
-
 
 ############################################################################################################################
 # Mars Facts: Use Pandas to scrape the Mars Data table containing facts about the planet including Diameter, Mass, etc.
 ############################################################################################################################
-def mars_facts_function():
+def mars_facts_function(browser):
     # Define URL of Mars Facts website
     facts_url = "https://space-facts.com/mars/"
     #  Read in data table via Pandas.
@@ -79,14 +90,11 @@ def mars_facts_function():
     facts_html = facts_df.to_html()
     return facts_html
 
-mars_facts_table = mars_facts_function()
-print(mars_facts_table)
-
 
 ###################################################################################################################################
 # Mars Hemispheres: Scrape from USGS Astrogeology site hi-res images for each of Mars' hemispheres, including URL for each image.
 ###################################################################################################################################
-def mars_hemisphere_function():
+def mars_hemisphere_function(browser):
     # This step navigates the chromebrowser window to USGS Astrogeology & runs BeautifulSoup to parse the site's HTML
     mars_hemisphere_url = "https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars"
     browser.visit(mars_hemisphere_url)
@@ -112,12 +120,8 @@ def mars_hemisphere_function():
     # Print dictionary containing Mars hemisphere names & images
     return hemisphere_pic_urls
 
-mars_hemisphere_images = mars_hemisphere_function()
-print(mars_hemisphere_images)
 
 
-###################################################################################################################################
-###################################################################################################################################
-
-# Close the chromebrowser window
-browser.quit()
+if __name__ == "__main__":
+    # Use to test as stand-alone script, decoupled from Flask app
+    scrape() # call SCRAPE function

@@ -26,8 +26,8 @@ def home():
 @app.route("/scrape")
 def scrape():
 
-    # Run the scrape function
-    mars_data = scrape_mars.mars_hemisphere_function()
+    # Run the scrape function (that lives in scrape_mars.py)
+    mars_data = scrape_mars.scrape()
 
     # Update the Mongo database using update and upsert=True
     mongo.db.collection.update({}, mars_data, upsert=True)
