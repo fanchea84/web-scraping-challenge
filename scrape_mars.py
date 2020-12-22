@@ -22,7 +22,8 @@ def scrape():
     # define blank mars dictionary
     mars_dict = {}
     # call each "sub" function
-    mars_dict["mars_headline"] = mars_news_function(browser)
+    mars_dict["mars_headline"] = mars_news_headline_function(browser)
+    mars_dict["mars_teaser"] = mars_news_teaser_function(browser)
     mars_dict["jpl_mars_image"] = jpl_image_function(browser)
     mars_dict["mars_facts_table"] = mars_facts_function(browser)
     mars_dict["mars_hemisphere_images"] = mars_hemisphere_function(browser)
@@ -35,18 +36,26 @@ def scrape():
 ############################################################################################################################
 # NASA Mars News: Scrape the NASA Mars News Site and collect the latest News Title and Paragraph Text.
 ############################################################################################################################
-# This step creates a function MARS_NEWS_FUNCTION that navigates the chromebrowser window to NASA News site & runs BeautifulSoup to parse the site's HTML
-def mars_news_function(browser):
+# This step creates a function MARS_NEWS_HEADLINE_FUNCTION that navigates the chromebrowser window to NASA News site & runs BeautifulSoup to parse the site's HTML
+def mars_news_headline_function(browser):
     nasa_url = "https://mars.nasa.gov/news/"
     browser.visit(nasa_url)
     sleep(3)  # This is a manual delay that prevents a "Race Condition" with JavaScript and this script competing for resources
     html = browser.html
     soup = BeautifulSoup(html, 'html.parser')
-    # Grab the latest headline and teaser title from NASA Mars News
-    nasa_headline = soup.find_all('div', class_='content_title')[1].get_text() # Adam: change the [1] back to [0] if this breaks.
-    nasa_teaser = soup.find_all('div', class_='article_teaser_body')[0].text
-    return nasa_headline, nasa_teaser
+    # Grab the latest headline title from NASA Mars News
+    nasa_headline = soup.find_all("div", class_="content_title")[1].get_text()
+    return nasa_headline
 
+def mars_news_teaser_function(browser):
+    nasa_url = "https://mars.nasa.gov/news/"
+    browser.visit(nasa_url)
+    sleep(3)  # This is a manual delay that prevents a "Race Condition" with JavaScript and this script competing for resources
+    html = browser.html
+    soup = BeautifulSoup(html, 'html.parser')
+    # Grab the latest headline teaser from NASA Mars News
+    nasa_teaser = soup.find_all("div", class_="article_teaser_body")[0].get_text()
+    return nasa_teaser
 
 ############################################################################################################################
 # JPL Mars Space Images: Use splinter to find the current Featured Mars Image
