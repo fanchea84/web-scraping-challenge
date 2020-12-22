@@ -10,29 +10,69 @@
 </head>
 
 <body>
+
   <!----------------------------------------------------------------------------------------------->
-  <!-- Top section containing Page Title, SCRAPE button, Mars News, Featured Image, & Mars Facts -->
+  <!-- Top section containing Page Title, SCRAPE Button, Mars News, Featured Image, & Mars Facts -->
   <!----------------------------------------------------------------------------------------------->
   <div class="container-fluid">
+    
+    <!-- Page Title & SCRAPE Button -->
     <div class="jumbotron text-center">
       <h1>Mission to Mars</h1>
       <p><a class="btn btn-primary btn-lg" href="/scrape" role="button">Scrape New Data</a></p>
     </div>
     <hr>
-    <h2>Latest Mars News</h2>
+    
+    <!-- Mars News -->
+    <div>
+      <h2>Latest Mars News</h2>
       <h3>{{data.mars_headline}}</h3>
       <h4>{{data.mars_teaser}}</h4>
-    <!-- <h3>data: {{ data.mars_hemisphere_images }}</h3> -->
+    </div>
     <hr>
-    <h2>Featured Mars Image</h2>
-      
+
+    <!-- Mars Featured Image -->
+    <div>
+      <h2>Featured Mars Image</h2>
+      <a href="{{data.jpl_mars_image}}"><img src="{{data.jpl_mars_image}}" alt="Featured Mars Image (JPL)" width="70%"></a>
+      <!-- <h3>data: {{ data.mars_hemisphere_images }}</h3> -->
+    </div>
     <hr>
-    <h2>Mars Facts</h2>
+
+    <!-- Mars Facts -->
+    <div>
+      <h2>Mars Facts</h2>
+      {{data.mars_facts_table | safe}}
+    </div>
+    <hr>
       
   
   <!----------------------------------------------------------------------------------------------->
   <!-- Bottom section containing Mars Hemisphere Images -->
   <!----------------------------------------------------------------------------------------------->    
+  <div class="container-fluid text-center">
+    <h2>Mars Hemispheres</h2>
+    <div class="container">
+      <div class="row">
+        {% for hemisphere in data.mars_hemisphere_images}
+        <div class="col">
+          <div class="card" style="width:400px; margin:3px">
+            <a href="{{mars_hemisphere_images['img_url']}}"><img src="{{mars_hemisphere_images['img_url']}}" class="card-img-top" alt="{{key}}" width="400px" height="400px"></a>
+            <div class="card-body" style="padding: 5px 0px 0px 0px;">
+              <h5 class="card-title">{{mars_hemisphere_images["title"]}}</h5>
+            </div>
+          </div>
+        </div>
+        {% if loop.index % 2 == 0 %}
+      </div>
+    </div>
+
+
+
+
+
+
+
 </body>
 
 </html>
