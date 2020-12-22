@@ -42,9 +42,10 @@ def mars_news_function(browser):
     sleep(3)  # This is a manual delay that prevents a "Race Condition" with JavaScript and this script competing for resources
     html = browser.html
     soup = BeautifulSoup(html, 'html.parser')
-    # Grab the latest headline from NASA Mars News
-    nasa_headline = soup.find_all("div", class_="content_title")[0].get_text()
-    return nasa_headline
+    # Grab the latest headline and teaser title from NASA Mars News
+    nasa_headline = soup.find_all('div', class_='content_title')[1].get_text() # Adam: change the [1] back to [0] if this breaks.
+    nasa_teaser = soup.find_all('div', class_='article_teaser_body')[0].text
+    return nasa_headline, nasa_teaser
 
 
 ############################################################################################################################
