@@ -56,17 +56,10 @@
       <div class="row">
         {% for hemisphere in data.mars_hemisphere_images}
         <div class="col">
-          <div class="card" style="width:400px; margin:3px">
-            <a href="{{mars_hemisphere_images['img_url']}}"><img src="{{mars_hemisphere_images['img_url']}}" class="card-img-top" alt="{{key}}" width="400px" height="400px"></a>
-            <div class="card-body" style="padding: 5px 0px 0px 0px;">
-              <h5 class="card-title">{{mars_hemisphere_images["title"]}}</h5>
-            </div>
-          </div>
+          hello world
+          <a href="{{hemisphere['img_url']}}"><img src="{{hemisphere['img_url']}}" width="300px" height="300px"></a>
         </div>
-        {% if loop.index % 2 == 0 %}
-          <div class="w-100"></div>
-        {% endif %}
-      {% endfor %}
+        {% endfor %}
       </div>
     </div>
   </div>
